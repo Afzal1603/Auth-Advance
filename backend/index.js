@@ -9,6 +9,7 @@ const path = require("path");
 dotenv.config();
 const app = express();
 PORT = process.env.PORT || 5000;
+connect();
 
 //------------------------------------------------------
 
@@ -33,6 +34,5 @@ if (process.env.NODE_ENV === "production") {
 //------------------------------------------------------
 
 app.listen(PORT, () => {
-  connect();
   console.log(`Server running on port  ${PORT}`);
 });
