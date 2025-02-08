@@ -12,7 +12,7 @@ PORT = process.env.PORT || 5000;
 connect();
 
 //------------------------------------------------------
-
+console.log(process.env.NODE_ENV);
 app.use(
   cors({
     origin: "http://localhost:5173",
