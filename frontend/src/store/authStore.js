@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import axios from "axios";
-import { logout } from "../../../backend/controllers/auth.controllers";
 
 const API_URL =
   import.meta.env.MODE === "development"
@@ -94,7 +93,19 @@ export const useAuthStore = create((set) => ({
     }
   },
   logout: async () => {
+    // Clear the user data and authentication state
     set({ user: null, isAuthenticated: false });
+
+    // Optionally, call the backend to destroy the session (e.g., clear cookies)
+    try {
+      await axios.post(`${API_URL}/logout`);
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
+
+    // Clear any persistent authentication tokens from localStorage or cookies
+    localStorage.removeItem("token"); // if you're using localStorage for token storage
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Clear cookies
   },
 
   resetPassword: async (token, password) => {
