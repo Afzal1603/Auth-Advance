@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
+import { logout } from "../../../backend/controllers/auth.controllers";
 
 const API_URL =
   import.meta.env.MODE === "development"
@@ -92,6 +93,10 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+  logout: async () => {
+    set({ user: null, isAuthenticated: false });
+  },
+
   resetPassword: async (token, password) => {
     set({ isLoading: true, error: null });
     try {

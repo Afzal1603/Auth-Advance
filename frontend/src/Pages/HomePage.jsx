@@ -1,13 +1,28 @@
 import { motion } from "framer-motion";
 import { LogOut, User, Mail } from "lucide-react";
 import { useAuthStore } from "../store/authStore";
+import axios from "axios";
 
 const HomePage = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token from storage
-    window.location.reload(); // Refresh to reset state
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        `${
+          import.meta.env.MODE === "development"
+            ? "http://localhost:5000"
+            : "https://auth-advance-1.onrender.com"
+        }/auth/logout`,
+        {},
+        { withCredentials: true } // ✅ Ensures cookies are included
+      );
+
+      logout(); // ✅ Reset state in Zustand
+      window.location.href = "/login"; // ✅ Redirect after logout
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (

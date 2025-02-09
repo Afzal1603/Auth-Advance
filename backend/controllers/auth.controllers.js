@@ -114,7 +114,13 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.cookie("token", "", { expires: new Date(0), httpOnly: true });
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // ✅ Ensures HTTPS in production
+    sameSite: "None", // ✅ Allows cross-site cookies (important for frontend-backend on different domains)
+    expires: new Date(0), // ✅ Force immediate expiration
+  });
+
   res.status(200).json({ success: true, message: "Logged out successfully" });
 };
 
